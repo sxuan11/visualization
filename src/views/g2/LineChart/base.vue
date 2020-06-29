@@ -5,54 +5,117 @@
 </template>
 
 <script>
-import { Chart } from "@antv/g2";
+import {handleData } from './index.ts'
+import { Chart, registerAnimation } from '@antv/g2';
 export default {
   data() {
     return {
-      year: [
-        { year: "1991", value: 3 },
-        { year: "1992", value: 4 },
-        { year: "1993", value: 3.5 },
-        { year: "1994", value: 5 },
-        { year: "1995", value: 4.9 },
-        { year: "1996", value: 6 },
-        { year: "1997", value: 7 },
-        { year: "1998", value: 9 },
-        { year: "1999", value: 13 }
-      ]
+      gdp: require('./gdp.json')
     };
   },
   mounted() {
-    this.initLineChart()
+    this.initLineChart();
   },
   methods: {
     initLineChart() {
-      const chart = new Chart({
-        container: "l1",
-        autoFit: true,
-        height: 500
-      });
-      chart.data(this.year);
-      chart.scale({
-        year: {
-          range: [0, 1]
-        },
-        value: {
-          min: 0,
-          nice: true
-        }
-      });
-      chart.tooltip({
-        showCrosshairs: true, // 展示 Tooltip 辅助线
-        shared: true
-      });
-      chart
-        .line()
-        .position("year*value")
-        .label("value");
-      chart.point().position("year*value");
+    let count = 0;
+    let chart;
+    let interval;
+    let _this = this
+    function countUp() {
+      if (count === 0) {
+        chart = new Chart({
+          container: 'l1',
+          autoFit: true,
+          height: 500,
+          padding: [ 20, 60 ]
+        });
+        // @ts-ignore
+        chart.data(handleData(Object.values(_this.gdp)[count]));
+        chart.coordinate('rect').transpose();
+        chart.legend(false);
+        chart.tooltip(false);
+        // chart.axis('value', false);
+        chart.axis('city', {
+          animateOption: {
+            update: {
+              duration: 1000,
+              easing: 'easeLinear'
+            }
+          }
+        });
+        chart.annotation().text({
+          position: ['95%', '90%'],
+          content: Object.keys(_this.gdp)[count],
+          style: {
+            fontSize: 40,
+            fontWeight: 'bold',
+            fill: '#ddd',
+            textAlign: 'end'
+          },
+          animate: false,
+        });
+        chart
+          .interval()
+          .position('city*value')
+          .color('city')
+          .label('value', (value) => {
+            // if (value !== 0) {
+            return {
+              animate: {
+                appear: {
+                  animation: 'label-appear',
+                  delay: 0,
+                  duration: 1000,
+                  easing: 'easeLinear'
+                },
+                update: {
+                  animation: 'label-update',
+                  duration: 1000,
+                  easing: 'easeLinear'
+                }
+              },
+              offset: 5,
+            };
+            // }
+          }).animate({
+            appear: {
+              duration: 1000,
+              easing: 'easeLinear'
+            },
+            update: {
+              duration: 1000,
+              easing: 'easeLinear'
+            }
+          });
 
-      chart.render();
+        chart.render();
+      } else {
+        chart.annotation().clear(true);
+        chart.annotation().text({
+          position: ['95%', '90%'],
+          content: Object.keys(_this.gdp)[count],
+          style: {
+            fontSize: 40,
+            fontWeight: 'bold',
+            fill: '#ddd',
+            textAlign: 'end'
+          },
+          animate: false,
+        });
+        // @ts-ignore
+        chart.changeData(handleData(Object.values(_this.gdp)[count]));
+      }
+
+      ++count;
+
+      if (count === Object.keys(_this.gdp).length) {
+        clearInterval(interval);
+      }
+    }
+
+    countUp();
+    interval = setInterval(countUp, 1200);
     }
   }
 };
