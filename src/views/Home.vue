@@ -35,7 +35,8 @@
         <span slot="title"><a-icon type="appstore" /><span>柱状图</span></span>
         <a-sub-menu key="sub3" title="Submenu">
           <a-menu-item key="7">
-            Option 7
+            <router-link to="/g2bar"></router-link>
+            g2bar
           </a-menu-item>
           <a-menu-item key="8">
             Option 8

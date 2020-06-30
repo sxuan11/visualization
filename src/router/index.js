@@ -28,6 +28,11 @@ Vue.use(VueRouter)
     path: '/g2stepline',
     name: 'g2stepline',
     component: () => import(/* webpackChunkName: "about" */ '../views/g2plot/StepLine/basestepline.vue')
+  },
+  {
+    path: '/g2bar',
+    name: 'g2bar',
+    component: () => import(/* webpackChunkName: "about" */ '../views/g2plot/chart/base.vue')
   }
 ]
 
