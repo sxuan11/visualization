@@ -23,6 +23,11 @@ Vue.use(VueRouter)
     path: '/g2mutlineChart',
     name: 'g2mutlineChart',
     component: () => import(/* webpackChunkName: "about" */ '../views/g2plot/lineChart/mutline.vue')
+  },
+  {
+    path: '/g2stepline',
+    name: 'g2stepline',
+    component: () => import(/* webpackChunkName: "about" */ '../views/g2plot/StepLine/basestepline.vue')
   }
 ]
 

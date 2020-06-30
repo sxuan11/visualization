@@ -51,10 +51,21 @@ export default {
               return `${v}年`;
             }
           },
-          value: {
+          gdp: {
             alias: "数量",
             formatter: v => {
-              console.log(v);
+              return `${(v / 10e8).toFixed(1)} B`;
+            }
+          },
+          name:{
+            alias:'城市',
+            formatter:v=>{
+              if(v=='China'){
+                return `中国`
+              }else if(v == 'United States'){
+                return '美国'
+              }
+              return v
             }
           }
         },

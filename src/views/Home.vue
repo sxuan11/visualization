@@ -11,7 +11,7 @@
       <a-sub-menu key="sub1" @titleClick="titleClick">
         <span slot="title"><a-icon type="mail" /><span>折线图</span></span>
         <a-menu-item-group key="g1">
-          <template slot="title"> <a-icon type="qq" /><span>基础折线图</span> </template>
+          <template slot="title"><span>基础折线图</span> </template>
           <a-menu-item key="1">
             <router-link to="/g2lineChart"></router-link>
             基础折线图
@@ -21,9 +21,10 @@
             多折线图
           </a-menu-item>
         </a-menu-item-group>
-        <a-menu-item-group key="g2" title="Item 2">
+        <a-menu-item-group key="g2" title="阶梯折线图">
           <a-menu-item key="3">
-            Option 3
+            <router-link to="/g2stepline"></router-link>
+            基础阶梯折线图
           </a-menu-item>
           <a-menu-item key="4">
             Option 4
